@@ -71,6 +71,7 @@ require('lazy').setup({
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
+  'mbbill/undotree',
   {
       "kylechui/nvim-surround",
       version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -285,6 +286,8 @@ vim.keymap.set('n', '<C-Up>', ':resize -2<CR>', {desc = 'Resize split up' })
 vim.keymap.set('n', '<C-Down>', ':resize +2<CR>', {desc = 'Resize split down' })
 vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>', {desc = 'Resize split left' })
 vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>', {desc = 'Resize split right' })
+
+vim.keymap.set("n", "<leader>u", ":UndotreeToggle<cr>", {desc = "[U]ndotree"})
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -444,6 +447,7 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
+
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
