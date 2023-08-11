@@ -69,19 +69,22 @@ require('lazy').setup({
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
   --REPL
-{ 'milanglacier/yarepl.nvim', config = true },
+  { 'milanglacier/yarepl.nvim', config = true },
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
   'mbbill/undotree',
+
+  'jose-elias-alvarez/null-ls.nvim',
+
   {
-      "kylechui/nvim-surround",
-      version = "*", -- Use for stability; omit to use `main` branch for the latest features
-      event = "VeryLazy",
-      config = function()
-          require("nvim-surround").setup({
-              -- Configuration here, or leave empty to use defaults
-          })
-      end
+    "kylechui/nvim-surround",
+    version = "*",   -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
   },
 
   -- NOTE: This is where your plugins related to LSP can be installed.
@@ -91,19 +94,19 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim', config = true },
+      { 'williamboman/mason.nvim', config = true,  opts = { ensure_installed = { "black", "ruff", }, }, },
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
     },
   },
 
-{
+  {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
     dependencies = {
@@ -111,8 +114,8 @@ require('lazy').setup({
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
     }
-},
-{'akinsho/toggleterm.nvim', version = "*", config = true},
+  },
+  { 'akinsho/toggleterm.nvim',  version = "*", config = true },
 
   {
     -- Autocompletion
@@ -131,7 +134,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',          opts = {} },
   {
     -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -145,7 +148,8 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
+          { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
       end,
@@ -184,7 +188,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 'numToStr/Comment.nvim',         opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -214,7 +218,7 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
+  require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -235,7 +239,7 @@ vim.o.hlsearch = false
 
 -- Make line numbers default
 vim.wo.number = true
-
+vim.wo.relativenumber = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
@@ -280,23 +284,24 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 vim.keymap.set('i', 'jk', "<Esc>", {})
 vim.keymap.set('n', '<leader>ft', "<cmd>Neotree toggle<cr>", { desc = 'open [F]ile [Tree] in neotree' })
-vim.keymap.set('n', '<C-h>', '<C-w>h', {desc = 'Move to left split' })
-vim.keymap.set('n', '<C-j>', '<C-w>j', {desc = 'Move to below split' })
-vim.keymap.set('n', '<C-k>', '<C-w>k', {desc = 'Move to above split' })
-vim.keymap.set('n', '<C-l>', '<C-w>l', {desc = 'Move to right split' })
-vim.keymap.set('n', '<C-Up>', ':resize -2<CR>', {desc = 'Resize split up' })
-vim.keymap.set('n', '<C-Down>', ':resize +2<CR>', {desc = 'Resize split down' })
-vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>', {desc = 'Resize split left' })
-vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>', {desc = 'Resize split right' })
-vim.keymap.set('t', 'jk', "<cmd>stopinsert<cr>", {desc = 'Exit inster mode in terminal' })
-vim.keymap.set('t', '<Esc>', "<cmd>stopinsert<cr>", {desc = 'Exit inster mode in terminal' })
-vim.keymap.set('t', '<C-t>', "<cmd>ToggleTerm<cr>", {desc = 'Toggle term in terminal' })
-vim.keymap.set('n', '<leader>th', "<cmd>ToggleTerm<cr>", {desc = '[T]erminal [H]orizonta' })
-vim.keymap.set('n', '<leader>tv', "<cmd>ToggleTerm size=40 direction=vertical <cr>", {desc = '[T]erminal [V]ertical' })
+vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to left split' })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to below split' })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to above split' })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to right split' })
+vim.keymap.set('n', '<C-Up>', ':resize -2<CR>', { desc = 'Resize split up' })
+vim.keymap.set('n', '<C-Down>', ':resize +2<CR>', { desc = 'Resize split down' })
+vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>', { desc = 'Resize split left' })
+vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>', { desc = 'Resize split right' })
+vim.keymap.set('t', 'jk', "<cmd>stopinsert<cr>", { desc = 'Exit inster mode in terminal' })
+vim.keymap.set('t', '<Esc>', "<cmd>stopinsert<cr>", { desc = 'Exit inster mode in terminal' })
+vim.keymap.set('t', '<C-t>', "<cmd>ToggleTerm<cr>", { desc = 'Toggle term in terminal' })
+vim.keymap.set('n', '<leader>th', "<cmd>ToggleTerm<cr>", { desc = '[T]erminal [H]orizonta' })
+vim.keymap.set('n', '<leader>tv', "<cmd>ToggleTerm size=40 direction=vertical <cr>", { desc = '[T]erminal [V]ertical' })
 
-vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", {desc = "[U]ndotree"})
-vim.keymap.set("n", "<leader>rs", "<cmd>REPLStart<cr>", {desc = "[R]epl [S]tart"})
-vim.keymap.set('n', "<leader>rr", "/# %%<cr>N<S-v>n<leader>:<BS><BS><BS><BS><BS>REPLSendVisual<cr>n", {desc = "[R]EPL [R]un cell"})
+vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "[U]ndotree" })
+vim.keymap.set("n", "<leader>rs", "<cmd>REPLStart<cr>", { desc = "[R]epl [S]tart" })
+vim.keymap.set('n', "<leader>rr", "/# %%<cr>N<S-v>n<leader>:<BS><BS><BS><BS><BS>REPLSendVisual<cr>n",
+  { desc = "[R]EPL [R]un cell" })
 --["<leader>ru"] = { "/# %%<cr>N<S-v>n<leader>:<BS><BS><BS><BS><BS>REPLSendVisual<cr>n", desc = "REPL rUn cell" },
 --["<S-cr>"] = { "/# %%<cr>N<S-v>n<leader>:<BS><BS><BS><BS><BS>REPLSendVisual<cr>n", desc = "REPL rUn cell" },
 -- [[ Highlight on yank ]]
@@ -352,7 +357,7 @@ vim.cmd.colorscheme "catppuccin"
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = {'lua', 'python', 'rust'},
+  ensure_installed = { 'lua', 'python', 'rust' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
@@ -478,6 +483,7 @@ local servers = {
   rust_analyzer = {},
   ruff_lsp = {},
 
+
   -- tsserver = {},
 
   lua_ls = {
@@ -487,6 +493,15 @@ local servers = {
     },
   },
 }
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  sources = {
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.diagnostics.ruff,
+  },
+})
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -562,33 +577,33 @@ cmp.setup {
 local yarepl = require 'yarepl'
 
 yarepl.setup {
-    -- see `:h buflisted`, whether the REPL buffer should be buflisted.
-    buflisted = true,
-    -- whether the REPL buffer should be a scratch buffer.
-    scratch = true,
-    -- the filetype of the REPL buffer created by `yarepl`
-    ft = 'REPL',
-    -- How yarepl open the REPL window, can be a string or a lua function.
-    -- See below example for how to configure this option
-    wincmd = 'vertical 30 split',
-    -- The available REPL palattes that `yarepl` can create REPL based on
-    metas = {
-        ipython = { cmd = 'ipython', formatter = yarepl.formatter.bracketed_pasting },
+  -- see `:h buflisted`, whether the REPL buffer should be buflisted.
+  buflisted = true,
+  -- whether the REPL buffer should be a scratch buffer.
+  scratch = true,
+  -- the filetype of the REPL buffer created by `yarepl`
+  ft = 'REPL',
+  -- How yarepl open the REPL window, can be a string or a lua function.
+  -- See below example for how to configure this option
+  wincmd = 'vertical 30 split',
+  -- The available REPL palattes that `yarepl` can create REPL based on
+  metas = {
+    ipython = { cmd = 'ipython', formatter = yarepl.formatter.bracketed_pasting },
+  },
+  -- when a REPL process exits, should the window associated with those REPLs closed?
+  close_on_exit = true,
+  -- whether automatically scroll to the bottom of the REPL window after sending
+  -- text? This feature would be helpful if you want to ensure that your view
+  -- stays updated with the latest REPL output.
+  scroll_to_bottom_after_sending = true,
+  os = {
+    -- Some hacks for Windows. macOS and Linux users can simply ignore
+    -- them. The default options are recommended for Windows user.
+    windows = {
+      -- Send a final `\r` to the REPL with delay,
+      send_delayed_cr_after_sending = true,
     },
-    -- when a REPL process exits, should the window associated with those REPLs closed?
-    close_on_exit = true,
-    -- whether automatically scroll to the bottom of the REPL window after sending
-    -- text? This feature would be helpful if you want to ensure that your view
-    -- stays updated with the latest REPL output.
-    scroll_to_bottom_after_sending = true,
-    os = {
-        -- Some hacks for Windows. macOS and Linux users can simply ignore
-        -- them. The default options are recommended for Windows user.
-        windows = {
-            -- Send a final `\r` to the REPL with delay,
-            send_delayed_cr_after_sending = true,
-        },
-    },
+  },
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
