@@ -233,6 +233,8 @@ require('lazy').setup({
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
+-- tun on spellcheck by default
+vim.opt.spell = true
 -- turn linewrap off
 vim.wo.wrap = false
 
