@@ -233,6 +233,8 @@ require('lazy').setup({
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
+-- turn linewrap off
+vim.wo.wrap = false
 
 -- Set highlight on search
 vim.o.hlsearch = false
