@@ -78,7 +78,7 @@ require('lazy').setup({
 
   {
     "kylechui/nvim-surround",
-    version = "*",   -- Use for stability; omit to use `main` branch for the latest features
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
       require("nvim-surround").setup({
@@ -258,10 +258,10 @@ vim.o.clipboard = 'unnamedplus'
 vim.o.breakindent = true
 
 -- indentation should be 4 spacec
-vim.o.expandtab = true -- expand tab input with spaces characters
+vim.o.expandtab = true   -- expand tab input with spaces characters
 vim.o.smartindent = true -- syntax aware indentations for newline inserts
-vim.o.tabstop = 4 -- num of space characters per tab
-vim.o.shiftwidth = 4 -- spaces per indentation level
+vim.o.tabstop = 4        -- num of space characters per tab
+vim.o.shiftwidth = 4     -- spaces per indentation level
 
 -- Save undo history
 vim.o.undofile = true
