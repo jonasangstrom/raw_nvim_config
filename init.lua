@@ -160,6 +160,9 @@ require('lazy').setup({
     -- Theme inspired by Atom
     'catppuccin/nvim',
     priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'catppuccin'
+    end,
   },
 
   {
@@ -169,7 +172,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'catppuccin',
         component_separators = '|',
         section_separators = '',
       },
