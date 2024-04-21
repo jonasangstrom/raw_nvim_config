@@ -94,7 +94,7 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim', config = true,  opts = { ensure_installed = { "black", "ruff", }, }, },
+      { 'williamboman/mason.nvim', config = true,  opts = { ensure_installed = { "black", "ruff", "ruff-lsp", "mypy", "pylint" }, }, },
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
@@ -155,16 +155,11 @@ require('lazy').setup({
       end,
     },
   },
-
   {
-    -- Theme inspired by Atom
-    'catppuccin/nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'catppuccin'
-    end,
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000
   },
-
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -235,6 +230,14 @@ require('lazy').setup({
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
 }, {})
+
+require("catppuccin").setup({
+  flavour = "mocha",
+  transparent_background = true,
+}
+)
+
+vim.cmd.colorscheme "catppuccin"
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -367,7 +370,6 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 
 
 vim.keymap.set('n', '<leader>gg', ":Git<cr>", { desc = '[Get] [Git]' })
-vim.cmd.colorscheme "catppuccin"
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -495,9 +497,10 @@ end
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  pyright = {},
   rust_analyzer = {},
   ruff_lsp = {},
+  jedi_language_server = {},
+  pyright = {},
 
 
   -- tsserver = {},
@@ -509,6 +512,19 @@ local servers = {
     },
   },
 }
+local pyright = require 'lspconfig'.pyright
+pyright.setup {
+  python = {
+    analysis = {
+      autoSearchPaths = true,
+      diagnosticMode = "workspace",
+      useLibraryCodeForTypes = true,
+      typeCheckingMode = "strict"
+    },
+    disableLanguageServices = false
+  }
+}
+
 
 local null_ls = require("null-ls")
 
@@ -516,7 +532,18 @@ null_ls.setup({
   sources = {
     null_ls.builtins.formatting.black,
     null_ls.builtins.diagnostics.ruff,
+    -- null_ls.builtins.diagnostics.mypy,
+    -- null_ls.builtins.diagnostics.pylint
   },
+})
+
+-- to make my detect virtual env
+null_ls.builtins.diagnostics.mypy.with({
+  extra_args = function()
+    local virtual = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_PREFIX") or "/usr"
+    print(virtual)
+    return { "--python-executable", virtual .. "/bin/python3" }
+  end,
 })
 
 -- Setup neovim lua configuration
@@ -621,10 +648,30 @@ yarepl.setup {
     },
   },
 }
+vim.cmd('autocmd BufNewFile,BufRead Jenkinsfile* set filetype=groovy')
 
+vim.diagnostic.config({
+  virtual_text = {
+    -- source = "always",  -- Or "if_many"
+    prefix = '●', -- Could be '■', '▎', 'x'
+  },
+  severity_sort = true,
+  float = {
+    source = "always", -- Or "if_many"
+  },
+})
+require('lspconfig').ruff_lsp.setup {
+  on_attach = on_attach,
+  init_options = {
+    settings = {
+      -- Any extra CLI arguments for `ruff` go here.
+      args = {},
+    }
+  }
+}
 -- set background to transparent
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+-- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
