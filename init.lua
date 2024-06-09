@@ -75,13 +75,9 @@ require('lazy').setup(
     -- Detect tabstop and shiftwidth automatically
     'tpope/vim-sleuth',
     'mbbill/undotree',
-
     'jose-elias-alvarez/null-ls.nvim',
-
-
     -- NOTE: This is where your plugins related to LSP can be installed.
     --  The configuration is done below. Search for lspconfig to find it below.
-
     {
       "nvim-neo-tree/neo-tree.nvim",
       branch = "v3.x",
@@ -92,7 +88,6 @@ require('lazy').setup(
       }
     },
     { 'akinsho/toggleterm.nvim',  version = "*", config = true },
-
     {
       -- Autocompletion
       'hrsh7th/nvim-cmp',
@@ -108,7 +103,6 @@ require('lazy').setup(
         'rafamadriz/friendly-snippets',
       },
     },
-
     -- Useful plugin to show you pending keybinds.
     { 'folke/which-key.nvim',          opts = {} },
     {
