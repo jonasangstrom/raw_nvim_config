@@ -67,6 +67,14 @@ require('lazy').setup(
   {
     -- NOTE: First, some plugins that don't require any configuration
 
+    {
+      'jakewvincent/mkdnflow.nvim',
+      config = function()
+        require('mkdnflow').setup({
+          -- Config goes here; leave blank for defaults
+        })
+      end
+    },
     -- Git related plugins
     'tpope/vim-fugitive',
     'tpope/vim-rhubarb',
