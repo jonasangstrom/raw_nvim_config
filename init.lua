@@ -287,6 +287,7 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 vim.keymap.set('i', 'jk', "<Esc>", {})
 vim.keymap.set('n', '<leader>ft', "<cmd>Neotree toggle<cr>", { desc = 'open [F]ile [Tree] in neotree' })
+vim.keymap.set('n', '<leader>fo', ":Oil<cr>", { desc = 'open [F]older in [oil]' })
 --vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to left split' })
 --vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to below split' })
 --vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to above split' })
