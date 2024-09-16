@@ -68,6 +68,15 @@ require('lazy').setup(
     -- NOTE: First, some plugins that don't require any configuration
 
     {
+      'stevearc/oil.nvim',
+      --@module 'oil'
+      --@type oil.SetupOpts
+      opts = {},
+      -- Optional dependencies
+      dependencies = { { "echasnovski/mini.icons", opts = {} } },
+      -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+    },
+    {
       'jakewvincent/mkdnflow.nvim',
       config = function()
         require('mkdnflow').setup({
